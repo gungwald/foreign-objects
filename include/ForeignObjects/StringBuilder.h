@@ -8,21 +8,21 @@
 #ifndef FOREIGN_OBJECTS_STRINGBUILDER_H
 #define FOREIGN_OBJECTS_STRINGBUILDER_H
 
-#define SB_INITIAL_CAPACITY 1024
+#include <ForeignObjects/Character.h>
 
-struct StringBuilder {
-	char *characters;
+struct _StringBuilder {
+	FO_CHAR *characters;
 	size_t capacity;
 	size_t length;
 };
 
 typedef
-	struct StringBuilder *
+	struct _StringBuilder
 	StringBuilder;
 
-extern StringBuilder new_StringBuilder(const char *s);
-extern size_t sbLength(String s);
-extern StringBuilder sbAppend(StringBuilder s, String t);
-extern char sbCharAt(StringBuilder s, size_t idx);
+extern StringBuilder *new_StringBuilder(size_t initialCapacity);
+extern size_t sbLength(StringBuilder *s);
+extern StringBuilder *sbAppend(StringBuilder *s, FO_CHAR *t);
+extern FO_CHAR sbCharAt(StringBuilder *s, size_t idx);
 
 #endif
