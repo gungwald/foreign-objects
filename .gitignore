@@ -2,3 +2,4 @@ Debug
 *.o
 *.d
 *.dynlib
+*.swp
