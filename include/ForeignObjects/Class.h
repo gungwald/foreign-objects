@@ -8,12 +8,12 @@
 #ifndef FOREIGN_OBJECTS_CLASS_H
 #define FOREIGN_OBJECTS_CLASS_H
 
-enum Class {CLS_OBJECT, CLS_STRING, CLS_STRINGBUILDER, CLS_ARRAYLIST, CLS_CONSCELL};
+enum Class_ {CLS_OBJECT, CLS_STRING, CLS_STRINGBUILDER, CLS_ARRAYLIST, CLS_CONSCELL};
 
 typedef
-    enum Class
-	Class;
+    enum Class_
+    Class;
 
-extern wchar_t *clsGetName(Class cls);
+extern String *clsGetName(Class cls);
 
 #endif

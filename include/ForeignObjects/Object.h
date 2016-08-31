@@ -17,7 +17,7 @@ struct Object {
 };
 
 typedef
-	struct Object *
+	struct Object_ *
 	Object;
 
 extern Class getClass(Object o);

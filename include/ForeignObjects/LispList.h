@@ -13,13 +13,15 @@
 #include "ForeignObjects/Class.h"
 #include "ForeignObjects/Object.h"
 
-struct ConsCell {
-	Class cls;
+struct ConsCell_ {
+    Class cls;
     Object first;	/* car */
     Object rest;	/* cdr */
 };
 
-typedef struct ConsCell		*ConsCell;
+typedef 
+    struct ConsCell_		
+    *ConsCell;
 
 extern ConsCell cons(Object first, Object rest);
 extern Object first(ConsCell list);

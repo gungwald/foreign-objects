@@ -11,10 +11,11 @@
 #include <stdbool.h>
 
 #include <ForeignObjects/Class.h>
+#include <ForeignObjects/Character.h>
 
 struct String {
-	Class cls;
-	wchar_t *characters;
+    Class cls;
+    wchar_t *characters;
     size_t length;
 };
 
