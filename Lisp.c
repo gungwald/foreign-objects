@@ -13,7 +13,7 @@ ConsCell cons(Object first, Object rest)
 {
 	ConsCell consCell;
 
-	consCell = (ConsCell) GC_MALLOC(sizeof(struct ConsCell));
+	consCell = (ConsCell) GC_MALLOC(sizeof(struct ConsCell_));
     if (consCell) {
     	consCell->cls = CLS_CONSCELL;
         consCell->first = first;
