@@ -7,155 +7,152 @@
 #include <string.h>
 #include <wchar.h>
 #include <stdlib.h>
-#include <wctype.h>	/* towlower */
 #include <gc.h>
 
 #include <ForeignObjects/Class.h>
 #include <ForeignObjects/Object.h>
 #include <ForeignObjects/String.h>
 
-String new_String(const wchar_t *s)
-{
-	String n;
+String *new_String(const char *s) {
+    String *n;
     size_t len;
-    wchar_t *validatedS;
+    char *validatedS;
 
     if (s == NULL) {
-    	validatedS = (wchar_t *) "";
+        validatedS = (char *) "";
     }
     else {
-        validatedS = (wchar_t *) s;
+        validatedS = (char *) s;
     }
 
-    len = wcslen(validatedS);
-    n = (String) GC_MALLOC(sizeof(struct String));
+    len = strlen(validatedS);
+    n = (String *) GC_MALLOC(sizeof(struct String_));
     if (n != NULL) {
         n->cls = CLS_STRING;
         n->length = len;
-        n->characters = (wchar_t *) GC_MALLOC(sizeof(wchar_t) * len + 1);
-    	if (n->characters != NULL) {
-        	wcscpy(n->characters, validatedS);
-    	}
-    	else {
-    		GC_FREE(n);
-    		n = NULL;
-    	}
-    }
-	return n;
-}
-
-size_t sLength(const String s)
-{
-    if (s == NULL) {
-    	return 0;
-    }
-    else {
-    	return s->length;
-    }
-}
-
-String sConcat(const String s, const String t)
-{
-	size_t len;
-	String n = NULL;
-    wchar_t *p;
-    String vs, vt;
-
-    if (s == NULL)
-    	vs = new_String(L"");
-    else
-    	vs = s;
-
-    if (t == NULL)
-    	vt = new_String(L"");
-    else
-    	vt = t;
-
-	len = sLength(vs) + sLength(vt);
-	if ((p = (wchar_t *) GC_MALLOC(sizeof(wchar_t) * len + 1)) != NULL) {
-		wcscpy(p, vs->characters);
-		wcscat(p, vt->characters);
-        if ((n = (String) GC_MALLOC(sizeof(struct String))) != NULL) {
-        	n->cls = CLS_STRING;
-        	n->characters = p;
-            n->length = len;
+        n->characters = (char *) GC_MALLOC(sizeof(char) * len + 1);
+        if (n->characters != NULL) {
+            strcpy(n->characters, validatedS);
         }
         else {
-        	GC_FREE(p);
+            GC_FREE(n);
+            n = NULL;
         }
-	}
-	return n;
+    }
+    return n;
 }
 
-String sConcatCharArray(const String s, const wchar_t *t)
-{
-	size_t len;
-	String n = NULL;
-    wchar_t *p;
-    String validatedS;
-    wchar_t *validatedT;
-
+size_t sLength(const String *s) {
     if (s == NULL) {
-        validatedS = new_String(L"");
+        return 0;
     }
     else {
-    	validatedS = s;
+        return s->length;
+    }
+}
+
+String *sConcat(const String *s, const String *t) {
+    size_t len;
+    String *n = NULL;
+    char *p;
+    const String *vs, *vt;
+
+    if (s == NULL) {
+        vs = new_String("");
+    }
+    else {
+        vs = s;
     }
 
     if (t == NULL) {
-    	validatedT = L"";
+        vt = new_String("");
     }
     else {
-    	validatedT = (wchar_t *) t;
+        vt = t;
     }
 
-	len = sLength(validatedS) + wcslen(validatedT);
-	if ((p = (wchar_t *) GC_MALLOC(sizeof(wchar_t) * len + 1)) != NULL) {
-		wcscpy(p, validatedS->characters);
-		wcscat(p, validatedT);
-        if ((n = (String) GC_MALLOC(sizeof(struct String))) != NULL) {
-        	n->cls = CLS_STRING;
-        	n->characters = p;
+    len = sLength(vs) + sLength(vt);
+    if ((p = (char *) GC_MALLOC(sizeof(char) * len + 1)) != NULL) {
+        strcpy(p, vs->characters);
+        strcat(p, vt->characters);
+        if ((n = (String *) GC_MALLOC(sizeof(struct String_))) != NULL) {
+            n->cls = CLS_STRING;
+            n->characters = p;
             n->length = len;
         }
         else {
-        	GC_FREE(p);
+            GC_FREE(p);
         }
-	}
-	return n;
+    }
+    return n;
 }
 
-wchar_t *sToCharArray(const String s)
-{
-    if (s == NULL)
-    	return L"";
-    else
-    	return s->characters;
+String *sConcatCharArray(const String *s, const char *t) {
+    size_t len;
+    String *n = NULL;
+    char *p;
+    const String *validatedS;
+    char *validatedT;
+
+    if (s == NULL) {
+        validatedS = new_String("");
+    }
+    else {
+        validatedS = s;
+    }
+
+    if (t == NULL) {
+        validatedT = "";
+    }
+    else {
+        validatedT = (char *) t;
+    }
+
+    len = sLength(validatedS) + strlen(validatedT);
+    if ((p = (char *) GC_MALLOC(sizeof(char) * len + 1)) != NULL) {
+        strcpy(p, validatedS->characters);
+        strcat(p, validatedT);
+        if ((n = (String *) GC_MALLOC(sizeof(struct String_))) != NULL) {
+            n->cls = CLS_STRING;
+            n->characters = p;
+            n->length = len;
+        }
+        else {
+            GC_FREE(p);
+        }
+    }
+    return n;
 }
 
-bool sEquals(const String s, const String t)
-{
-	return wcscmp(s->characters, t->characters) == 0;
+char *sToCharArray(const String *s) {
+    if (s == NULL) {
+        return "";
+    }
+    else {
+        return s->characters;
+    }
 }
 
-bool sEqualsIgnoreCase(const String s, const String t)
-{
-	return sEquals(sToLowerCase(s), sToLowerCase(t));
+bool sEquals(const String *s, const String *t) {
+    return strcmp(s->characters, t->characters) == 0;
 }
 
-String sToLowerCase(const String s)
-{
-	size_t i;
-    String lowerCased;
-    wchar_t *characters;
+bool sEqualsIgnoreCase(const String *s, const String *t) {
+    return sEquals(sToLowerCase(s), sToLowerCase(t));
+}
+
+String *sToLowerCase(const String *s) {
+    size_t i;
+    String *lowerCased;
+    char *characters;
     size_t len;
 
     lowerCased = new_String(s->characters);
     characters = lowerCased->characters;
     len = lowerCased->length;
 
-	for (i = 0; i < len; i++) {
-		characters[i] = towlower(characters[i]);
-	}
+    for (i = 0; i < len; i++) {
+        characters[i] = tolower(characters[i]);
+    }
     return lowerCased;
 }

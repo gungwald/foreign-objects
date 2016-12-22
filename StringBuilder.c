@@ -14,14 +14,14 @@ StringBuilder *new_StringBuilder(size_t initialCapacity)
 {
 	StringBuilder *sb;
 
-	sb = (StringBuilder *) GC_MALLOC(sizeof(struct _StringBuilder));
+	sb = (StringBuilder *) GC_MALLOC(sizeof(struct StringBuilder_));
     if (sb == NULL) {
     	fprintf(stderr, "Failed to allocate memory for StringBuilder\n");
     }
     else {
     	sb->capacity = initialCapacity;
     	sb->length = 0;
-    	sb->characters = (FO_CHAR *) GC_MALLOC(initialCapacity * sizeof(FO_CHAR));
+    	sb->characters = (char *) GC_MALLOC(initialCapacity * sizeof(char));
         if (sb->characters == NULL) {
         	fprintf(stderr, "Failed to allocate memory for StringBuilder\n");
             GC_FREE(sb);
@@ -39,18 +39,18 @@ size_t sbLength(StringBuilder *s)
 	return s->length;
 }
 
-StringBuilder *sbAppend(StringBuilder *s, FO_CHAR *t)
+StringBuilder *sbAppend(StringBuilder *s, char *t)
 {
 	size_t combinedLength;
     size_t capacity;
-    FO_CHAR *buffer;
+    char *buffer;
 
 	combinedLength = s->length + strlen(t);
     capacity = s->capacity;
 	while (combinedLength >= capacity) {
 		capacity *= 2;
 	}
-    buffer = (FO_CHAR *) GC_REALLOC(s->characters, capacity);
+    buffer = (char *) GC_REALLOC(s->characters, capacity);
     if (buffer == NULL) {
     	fprintf(stderr, "Failed to resize allocated memory for StringBuilder\n");
     }
@@ -58,12 +58,12 @@ StringBuilder *sbAppend(StringBuilder *s, FO_CHAR *t)
     	s->characters = buffer;
     	s->length = combinedLength;
     	s->capacity = capacity;
-        STRCAT(s->characters, t);
+        strcat(s->characters, t);
     }
     return s;
 }
 
-FO_CHAR sbCharAt(StringBuilder *s, size_t idx)
+char sbCharAt(StringBuilder *s, size_t idx)
 {
 	return s->characters[idx];
 }

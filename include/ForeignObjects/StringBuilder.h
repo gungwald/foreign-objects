@@ -8,21 +8,23 @@
 #ifndef FOREIGN_OBJECTS_STRINGBUILDER_H
 #define FOREIGN_OBJECTS_STRINGBUILDER_H
 
-#include <ForeignObjects/Character.h>
+#include <ForeignObjects/String.h>
 
-struct _StringBuilder {
-	FO_CHAR *characters;
+struct StringBuilder_ {
+	char *characters;
 	size_t capacity;
 	size_t length;
 };
 
 typedef
-	struct _StringBuilder
+	struct StringBuilder_
 	StringBuilder;
 
 extern StringBuilder *new_StringBuilder(size_t initialCapacity);
 extern size_t sbLength(StringBuilder *s);
-extern StringBuilder *sbAppend(StringBuilder *s, FO_CHAR *t);
-extern FO_CHAR sbCharAt(StringBuilder *s, size_t idx);
+extern StringBuilder *sbAppend(StringBuilder *s, char *t);
+extern char sbCharAt(StringBuilder *s, size_t index);
+extern String *sbToString(StringBuilder *s);
+extern char *sbToCharArray(StringBuilder *s);
 
 #endif

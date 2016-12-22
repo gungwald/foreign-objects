@@ -12,15 +12,15 @@
 
 #include <ForeignObjects/Class.h>
 
-struct Object {
+struct Object_ {
 	Class cls;
 };
 
 typedef
-	struct Object_ *
+	struct Object_
 	Object;
 
-extern Class getClass(Object o);
-extern bool instanceof(Object o, Class clazz);
+extern Class getClass(Object *o);
+extern bool instanceof(Object *o, Class clazz);
 
 #endif

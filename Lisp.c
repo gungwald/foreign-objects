@@ -9,11 +9,11 @@
 
 #include <ForeignObjects/LispList.h>
 
-ConsCell cons(Object first, Object rest)
+ConsCell *cons(Object *first, Object *rest)
 {
-	ConsCell consCell;
+	ConsCell *consCell;
 
-	consCell = (ConsCell) GC_MALLOC(sizeof(struct ConsCell_));
+	consCell = (ConsCell *) GC_MALLOC(sizeof(struct ConsCell_));
     if (consCell) {
     	consCell->cls = CLS_CONSCELL;
         consCell->first = first;
@@ -22,17 +22,17 @@ ConsCell cons(Object first, Object rest)
     return consCell;
 }
 
-Object first(ConsCell list)
+Object *first(ConsCell *list)
 {
 	return list->first;
 }
 
-Object rest(ConsCell list)
+Object *rest(ConsCell *list)
 {
 	return list->rest;
 }
 
-bool atom(Object o)
+bool atom(Object *o)
 {
 	return o->cls != CLS_CONSCELL;
 }

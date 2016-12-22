@@ -10,22 +10,22 @@
 
 #include <stdbool.h>
 
-#include "ForeignObjects/Class.h"
-#include "ForeignObjects/Object.h"
+#include <ForeignObjects/Class.h>
+#include <ForeignObjects/Object.h>
 
 struct ConsCell_ {
     Class cls;
-    Object first;	/* car */
-    Object rest;	/* cdr */
+    Object *first;	/* car */
+    Object *rest;	/* cdr */
 };
 
 typedef 
     struct ConsCell_		
-    *ConsCell;
+    ConsCell;
 
-extern ConsCell cons(Object first, Object rest);
-extern Object first(ConsCell list);
-extern Object rest(ConsCell list);
-extern bool atom(Object o);
+extern ConsCell *cons(Object *first, Object *rest);
+extern Object *first(ConsCell *list);
+extern Object *rest(ConsCell *list);
+extern bool atom(Object *o);
 
 #endif /* LISP_LANG_LIST_H_ */
